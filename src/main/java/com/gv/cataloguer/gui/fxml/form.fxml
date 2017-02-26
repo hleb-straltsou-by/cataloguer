@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="354.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gv.cataloguer.controllers.FormController">
+   <children>
+      <HBox prefHeight="86.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="553.0"
+                   text="Welcome to Cataloguer!" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="25.0" right="25.0" top="25.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Segoe Print" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="29.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="errorLabel" layoutX="286.0" layoutY="6.0" text="" />
+         </children>
+      </AnchorPane>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="600.0">
+         <children>
+            <TextField layoutX="173.0" layoutY="3.0" prefHeight="37.0" prefWidth="274.0" fx:id="loginField"
+                       promptText="email address..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
+            <Label layoutX="123.0" layoutY="12.0" prefHeight="20.0" prefWidth="44.0" text="Login:"
+                   AnchorPane.leftAnchor="123.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="600.0">
+         <children>
+            <PasswordField layoutX="173.0" layoutY="10.0" prefHeight="37.0" prefWidth="274.0" fx:id="passwordField"
+                           promptText="password..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
+            <Label layoutX="100.0" layoutY="17.0" prefHeight="20.0" prefWidth="62.0" text="Password:"
+                   AnchorPane.leftAnchor="100.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="34.0" prefWidth="600.0">
+         <children>
+            <Button layoutX="228.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0"
+                    prefWidth="62.0" text="Log in" onAction="#logIn" />
+            <Button layoutX="309.0" layoutY="2.0" mnemonicParsing="false" text="Sign Up" onAction="#signUp" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="78.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="163.0" layoutY="14.0" text="Also you can try our service with guest account!">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="275.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0"
+                    prefWidth="51.0" text="Try!" onAction="#logInAsGuest"/>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
