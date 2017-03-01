@@ -10,10 +10,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="354.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gv.cataloguer.controllers.FormController">
+      prefHeight="354.0" prefWidth="600.0" stylesheets="@../css/form.css"
+      xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gv.cataloguer.controllers.FormController">
    <children>
       <HBox prefHeight="86.0" prefWidth="600.0">
          <children>
@@ -30,15 +30,14 @@
       </HBox>
       <AnchorPane prefHeight="29.0" prefWidth="600.0">
          <children>
-            <Label fx:id="errorLabel" layoutX="286.0" layoutY="6.0" text="" />
+            <Label styleClass="errorLabel" fx:id="errorLabel" alignment="CENTER" layoutX="175.0" layoutY="6.0"
+                   prefHeight="17.0" prefWidth="266.0" text="" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="600.0">
          <children>
-            <TextField layoutX="173.0" layoutY="3.0" prefHeight="37.0" prefWidth="274.0" fx:id="loginField"
-                       promptText="email address..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
-            <Label layoutX="123.0" layoutY="12.0" prefHeight="20.0" prefWidth="44.0" text="Login:"
-                   AnchorPane.leftAnchor="123.0">
+            <TextField fx:id="loginField" layoutX="173.0" layoutY="3.0" prefHeight="37.0" prefWidth="274.0" promptText="email address..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
+            <Label layoutX="123.0" layoutY="12.0" prefHeight="20.0" prefWidth="44.0" text="Login:" AnchorPane.leftAnchor="123.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -47,10 +46,8 @@
       </AnchorPane>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="600.0">
          <children>
-            <PasswordField layoutX="173.0" layoutY="10.0" prefHeight="37.0" prefWidth="274.0" fx:id="passwordField"
-                           promptText="password..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
-            <Label layoutX="100.0" layoutY="17.0" prefHeight="20.0" prefWidth="62.0" text="Password:"
-                   AnchorPane.leftAnchor="100.0">
+            <PasswordField fx:id="passwordField" layoutX="173.0" layoutY="10.0" prefHeight="37.0" prefWidth="274.0" promptText="password..." AnchorPane.leftAnchor="173.0" AnchorPane.rightAnchor="153.0" />
+            <Label layoutX="100.0" layoutY="17.0" prefHeight="20.0" prefWidth="62.0" text="Password:" AnchorPane.leftAnchor="100.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -59,9 +56,8 @@
       </AnchorPane>
       <AnchorPane prefHeight="34.0" prefWidth="600.0">
          <children>
-            <Button layoutX="228.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0"
-                    prefWidth="62.0" text="Log in" onAction="#logIn" />
-            <Button layoutX="309.0" layoutY="2.0" mnemonicParsing="false" text="Sign Up" onAction="#signUp" />
+            <Button layoutX="228.0" layoutY="2.0" mnemonicParsing="false" onAction="#logIn" prefHeight="25.0" prefWidth="62.0" text="Log in" />
+            <Button layoutX="309.0" layoutY="2.0" mnemonicParsing="false" onAction="#signUp" text="Sign Up" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="78.0" prefWidth="600.0">
@@ -71,8 +67,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Button layoutX="275.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0"
-                    prefWidth="51.0" text="Try!" onAction="#logInAsGuest"/>
+            <Button layoutX="275.0" layoutY="41.0" mnemonicParsing="false" onAction="#logInAsGuest" prefHeight="25.0" prefWidth="51.0" text="Try!" />
          </children>
       </AnchorPane>
    </children>
