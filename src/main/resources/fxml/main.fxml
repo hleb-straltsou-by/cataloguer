@@ -16,10 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="627.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/8.0.111"
-            xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="823.0"
+            xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gv.cataloguer.controllers.MainController">
    <left>
       <Accordion BorderPane.alignment="CENTER">
         <panes>
@@ -91,7 +90,7 @@
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="202.0" prefWidth="0.0" />
-            <Label text="Click here to suggest material">
+            <Label text="Click here to suggest material" fx:id="suggestLabel">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -99,7 +98,7 @@
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" text="Suggest!">
+            <Button mnemonicParsing="false" text="Suggest!" fx:id="suggestButton">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
@@ -115,17 +114,19 @@
                   <Insets />
                </VBox.margin>
             </Separator>
-            <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="80.0" text="Add">
+            <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="80.0" text="Add" fx:id="addButton">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </Button>
-            <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Delete">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </Button>
-            <Button layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Update">
+             <Button layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0"
+                     text="Update" fx:id="updateButton">
+                 <VBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" />
+                 </VBox.margin>
+             </Button>
+            <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0"
+                    text="Delete" fx:id="deleteButton">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
@@ -139,7 +140,8 @@
    <top>
       <AnchorPane prefHeight="52.0" prefWidth="823.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0" promptText="Type something for search" />
+            <TextField layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0"
+                       promptText="Type something for search" />
             <Button layoutX="672.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="51.0" text="Find" />
             <Label layoutX="14.0" layoutY="11.0" prefHeight="32.0" prefWidth="162.0" text="CATALOG">
                <font>
