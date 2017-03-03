@@ -27,9 +27,8 @@ public class FormController {
     private PasswordField passwordField;
 
     private static final String AUTHENTICATION_ERROR = "Error! Please, check input email address or password...";
-    private static final int MIN_WINDOW_WIDTH = 840;
-    private static final int MIN_WINDOW_HEIGHT = 627;
-    public static Role currentRole;
+    private static final User USER_GUEST = new User(Role.GUEST);
+    public static User currentUser;
 
     public void logIn(ActionEvent actionEvent) {
         User user = UserValidator.checkLogin(loginField.getText(), passwordField.getText());
@@ -37,7 +36,7 @@ public class FormController {
             setAuthenticationError();
             return;
         }
-        forwardToMainPage(user.getRole());
+        forwardToMainPage(user);
     }
 
     public void signUp(ActionEvent actionEvent) {
@@ -45,22 +44,22 @@ public class FormController {
     }
 
     public void logInAsGuest(ActionEvent actionEvent) {
-        forwardToMainPage(Role.GUEST);
+        forwardToMainPage(USER_GUEST);
     }
 
     private void setAuthenticationError(){
         errorLabel.setText(AUTHENTICATION_ERROR);
     }
 
-    private void forwardToMainPage(Role role){
+    private void forwardToMainPage(User user){
         try {
-            currentRole = role;
+            currentUser = user;
             Stage stage = Main.getMainStage();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/main.fxml"));
             Scene scene = new Scene(root);
             stage.setResizable(true);
-            stage.setMinHeight(MIN_WINDOW_HEIGHT);
-            stage.setMinWidth(MIN_WINDOW_WIDTH);
+            stage.setMinHeight(Main.MIN_HEIGHT_OF_MAIN_WINDOW);
+            stage.setMinWidth(Main.MIN_WIDTH_OF_MAIN_WINDOW);
             stage.setScene(scene);
             stage.show();
         }catch (IOException e){

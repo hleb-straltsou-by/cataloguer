@@ -1,9 +1,9 @@
 package com.gv.cataloguer.models;
 
 public class User {
-    private int userId;
-    private String login;
-    private String name;
+    private int userId = 0;
+    private String login = "";
+    private String name = "";
     private Role role;
 
     public User(Role role) {
