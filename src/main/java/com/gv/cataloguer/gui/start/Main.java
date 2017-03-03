@@ -8,19 +8,21 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
-    private static final int MIN_WINDOW_WIDTH = 600;
-    private static final int MIN_WINDOW_HEIGHT = 354;
+    public static final int MIN_WIDTH_OF_FORM_WINDOW = 600;
+    public static final int MIN_HEIGHT_OF_FORM_WINDOW = 354;
+    public static final int MIN_WIDTH_OF_MAIN_WINDOW = 840;
+    public static final int MIN_HEIGHT_OF_MAIN_WINDOW = 627;
+
     private static Stage mainStage;
 
     public void start(Stage primaryStage) throws Exception {
         mainStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/form.fxml"));
-        primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
-        primaryStage.setMinHeight(MIN_WINDOW_HEIGHT);
+        primaryStage.setMinWidth(MIN_WIDTH_OF_FORM_WINDOW);
+        primaryStage.setMinHeight(MIN_HEIGHT_OF_FORM_WINDOW);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Cataloguer");
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("css/form.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
