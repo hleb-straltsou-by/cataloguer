@@ -1,5 +1,6 @@
-package com.gv.cataloguer.gui.start;
+package com.gv.cataloguer.start;
 
+import com.gv.cataloguer.catalog.ResourceCatalogInitializer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +17,8 @@ public class Main extends Application{
     private static Stage mainStage;
 
     public void start(Stage primaryStage) throws Exception {
+        Thread catalogInitializer = new Thread(new ResourceCatalogInitializer());
+        catalogInitializer.start();
         mainStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/form.fxml"));
         primaryStage.setMinWidth(MIN_WIDTH_OF_FORM_WINDOW);

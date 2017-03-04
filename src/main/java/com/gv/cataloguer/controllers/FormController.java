@@ -1,7 +1,7 @@
 package com.gv.cataloguer.controllers;
 
 import com.gv.cataloguer.authenthication.validation.UserValidator;
-import com.gv.cataloguer.gui.start.Main;
+import com.gv.cataloguer.start.Main;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import javafx.event.ActionEvent;
