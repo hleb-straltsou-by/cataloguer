@@ -1,4 +1,4 @@
-package com.gv.cataloguer.gui.start;
+package com.gv.cataloguer.start;
 
 import com.gv.cataloguer.catalog.ResourceCatalogInitializer;
 import javafx.application.Application;
