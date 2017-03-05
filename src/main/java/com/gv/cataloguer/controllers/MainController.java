@@ -13,12 +13,14 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class MainController {
+
+    @FXML
+    private Button updateButton;
 
     @FXML
     private Button addButton;
@@ -64,11 +66,11 @@ public class MainController {
                 suggestLabel.setVisible(false);
                 break;
             case GUEST:
-                addButton.setVisible(false);
-                deleteButton.setVisible(false);
+                addButton.setDisable(true);
+                deleteButton.setDisable(true);
                 break;
             case DEFAULT:
-                deleteButton.setVisible(false);
+                deleteButton.setDisable(true);
                 suggestButton.setVisible(false);
                 suggestLabel.setVisible(false);
                 break;
@@ -95,12 +97,13 @@ public class MainController {
         }
     }
 
-    public void addNewFile(ActionEvent actionEvent) throws IOException {
+    public void addNewResource(ActionEvent actionEvent) throws IOException {
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(Main.getMainStage());
         if (file != null) {
             String category = categories.getSelectionModel().getSelectedItem();
             ResourceCatalog.getInstance().addResourceToCatalog(category, file);
+            refreshTableContentFromLocalCatalog(category);
         }
     }
 
@@ -126,5 +129,23 @@ public class MainController {
         for(Reference ref : foundReferences){
             rootItem.getChildren().add(new TreeItem<>(ref));
         }
+    }
+
+    private void refreshTableContentFromLocalCatalog(String category){
+        List<Reference> references = ResourceCatalog.getInstance().getCategory(category);
+        TreeItem rootItem = treeTableView.getRoot();
+        rootItem.getChildren().clear();
+        Reference rootReference = (Reference)rootItem.getValue();
+        rootReference.setSize(0);
+        for(Reference ref : references){
+            rootItem.getChildren().add(new TreeItem<>(ref));
+            rootReference.setSize(rootReference.getSize() + ref.getSize());
+        }
+    }
+
+    public void updateCatalogFromRemoteDatabase(ActionEvent actionEvent) {
+//        updateButton.setDisable(true);
+//        ResourceCatalog.getInstance().updateCatalog();
+//        updateButton.setDisable(false);
     }
 }
