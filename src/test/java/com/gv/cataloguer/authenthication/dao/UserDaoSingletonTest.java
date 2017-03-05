@@ -1,12 +1,10 @@
 package com.gv.cataloguer.authenthication.dao;
 
-import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class UserDaoSingletonTest {
+
     @Test
     public void getUser() throws Exception {
         Assert.assertEquals(1, UserDaoSingleton.getInstance().
@@ -14,7 +12,12 @@ public class UserDaoSingletonTest {
         Assert.assertEquals(2, UserDaoSingleton.getInstance().
                 getUser("vi@gmail.com", "4477").getUserId());
         Assert.assertNull(UserDaoSingleton.getInstance().getUser("test@gmail.com", "test"));
+    }
 
+    @Test
+    public void getLastModifiedAndTraffic() throws Exception {
+        Assert.assertNull(UserDaoSingleton.getInstance().getLastUpdateAndTraffic(1)[0]);
+        Assert.assertEquals(0, UserDaoSingleton.getInstance().getLastUpdateAndTraffic(1)[1]);
     }
 
 }
