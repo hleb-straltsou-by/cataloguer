@@ -14,8 +14,7 @@ public class UserDaoSingleton implements UserDao {
     private static final int USER_ROLE_INDEX = 4;
     private static final int USER_NAME_INDEX = 5;
 
-    private UserDaoSingleton() {
-    }
+    private UserDaoSingleton() {}
 
     public static UserDaoSingleton getInstance() {
         return INSTANCE;
