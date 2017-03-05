@@ -4,7 +4,10 @@ import com.gv.cataloguer.catalog.dao.ResourceDaoDatabase;
 import com.gv.cataloguer.models.Reference;
 import java.io.File;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ResourceCatalog {
 
@@ -27,6 +30,20 @@ public class ResourceCatalog {
 
     public void updateResources(){
 
+    }
+
+    public List<Reference> searchReferences(String category, String stringPattern){
+        LinkedList<Reference> foundReferences = new LinkedList<>();
+        List<Reference> categoryReferences = getCategory(category);
+        Pattern regExpPattern = Pattern.compile(stringPattern);
+        Matcher matcher;
+        for(Reference ref : categoryReferences){
+            matcher = regExpPattern.matcher(ref.getName());
+            if(matcher.find()){
+                foundReferences.addLast(ref);
+            }
+        }
+        return foundReferences;
     }
 
     public void initializeCalatog(){

@@ -39,9 +39,6 @@ public class MainController {
     private Label logInLabel;
 
     @FXML
-    private Button logoutButton;
-
-    @FXML
     private TreeTableView<Reference> treeTableView;
 
     @FXML
@@ -52,6 +49,9 @@ public class MainController {
 
     @FXML
     private TreeTableColumn<Reference, String> lastModifiedColumn;
+
+    @FXML
+    private TextField searchField;
 
     private static final FileChooser fileChooser = new FileChooser();
 
@@ -106,16 +106,25 @@ public class MainController {
 
     public void selectCategory(MouseEvent mouseEvent) {
         String category = categories.getSelectionModel().getSelectedItem();
-        treeTableView.setRoot(new TreeItem<>(new Reference(category)));
+        Reference rootReference = new Reference(category);
+        treeTableView.setRoot(new TreeItem<>(rootReference));
         TreeItem rootItem = treeTableView.getRoot();
         rootItem.setExpanded(true);
         List<Reference> references = ResourceCatalog.getInstance().getCategory(category);
         for(Reference ref : references){
             rootItem.getChildren().add(new TreeItem<>(ref));
+            rootReference.setSize(rootReference.getSize() + ref.getSize());
         }
-//        rootItem.getChildren().add(new TreeItem<String>("Music"));
-//        rootItem.getChildren().add(new TreeItem<String>("Movies"));
-//        rootItem.getChildren().add(new TreeItem<String>("Books"));
-//        rootItem.getChildren().add(new TreeItem<String>("Documents"));
+    }
+
+    public void searchResources(ActionEvent actionEvent) {
+        String category = categories.getSelectionModel().getSelectedItem();
+        String pattern = searchField.getText();
+        List<Reference> foundReferences = ResourceCatalog.getInstance().searchReferences(category, pattern);
+        TreeItem rootItem = treeTableView.getRoot();
+        rootItem.getChildren().clear();
+        for(Reference ref : foundReferences){
+            rootItem.getChildren().add(new TreeItem<>(ref));
+        }
     }
 }
