@@ -60,25 +60,25 @@
       </HBox>
    </bottom>
    <right>
-      <VBox prefHeight="445.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="486.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Separator>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addNewFile" prefHeight="0.0"
-                    prefWidth="80.0" text="Add">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-               </VBox.margin>
-            </Button>
              <Button fx:id="updateButton" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0"
-                     prefWidth="83.0" text="Update">
+                     prefWidth="83.0" text="Update" onAction="#updateCatalogFromRemoteDatabase">
                  <VBox.margin>
-                     <Insets bottom="10.0" left="10.0" right="10.0" />
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="22.0" />
                  </VBox.margin>
              </Button>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addNewResource" prefHeight="0.0"
+                    prefWidth="80.0" text="Add">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="deleteButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0"
                     prefWidth="83.0" text="Delete">
                <VBox.margin>
@@ -86,18 +86,21 @@
                </VBox.margin>
             </Button>
             <Separator prefWidth="200.0" />
-            <ImageView fitHeight="324.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
-            <Separator prefHeight="12.0" prefWidth="100.0" />
+            <ImageView fitHeight="317.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
+            <Separator prefHeight="47.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Separator>
          </children>
       </VBox>
    </right>
    <top>
       <AnchorPane prefHeight="52.0" prefWidth="823.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0"
-                       promptText="Type something for search" fx:id="searchField" />
-            <Button layoutX="672.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0"
-                    text="Find" onAction="#searchResources"/>
+            <TextField fx:id="searchField" layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0"
+                       promptText="Type something for search" />
+            <Button layoutX="672.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchResources"
+                    prefHeight="25.0" prefWidth="52.0" text="Find" />
             <Label layoutX="14.0" layoutY="11.0" prefHeight="32.0" prefWidth="162.0" text="CATALOG">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
@@ -107,8 +110,8 @@
       </AnchorPane>
    </top>
    <left>
-      <ListView fx:id="categories" prefHeight="442.0" prefWidth="134.0" BorderPane.alignment="CENTER"
-                onMouseClicked="#selectCategory">
+      <ListView fx:id="categories" onMouseClicked="#selectCategory" prefHeight="442.0" prefWidth="134.0"
+                BorderPane.alignment="CENTER">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="music" />
@@ -122,7 +125,8 @@
    <center>
       <AnchorPane prefHeight="490.0" prefWidth="589.0" BorderPane.alignment="CENTER">
          <children>
-            <TreeTableView fx:id="treeTableView" prefHeight="478.0" prefWidth="589.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TreeTableView fx:id="treeTableView" prefHeight="478.0" prefWidth="589.0" AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
                 <TreeTableColumn fx:id="nameColumn" prefWidth="261.0" text="Name" />
                 <TreeTableColumn fx:id="sizeColumn" prefWidth="112.0" text="Size (in bytes)" />

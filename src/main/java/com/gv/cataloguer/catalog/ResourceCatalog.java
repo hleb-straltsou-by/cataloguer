@@ -28,10 +28,6 @@ public class ResourceCatalog {
         ResourceDaoDatabase.getInstance().addResourceToCategory(category, file);
     }
 
-    public void updateResources(){
-
-    }
-
     public List<Reference> searchReferences(String category, String stringPattern){
         LinkedList<Reference> foundReferences = new LinkedList<>();
         List<Reference> categoryReferences = getCategory(category);
@@ -46,7 +42,7 @@ public class ResourceCatalog {
         return foundReferences;
     }
 
-    public void initializeCalatog(){
+    public void updateCatalog(){
         Thread initializer = new Thread(new ResourceCatalogInitializer());
         initializer.start();
     }

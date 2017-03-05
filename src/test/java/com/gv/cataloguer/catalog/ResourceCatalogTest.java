@@ -9,13 +9,12 @@ public class ResourceCatalogTest {
 
     @Test
     public void searchReferences() throws Exception {
-        ResourceCatalog.getInstance().initializeCalatog();
+        ResourceCatalog.getInstance().updateCatalog();
         String category = "music";
         String pattern = "And";
-        Thread.sleep(4000);
+        Thread.sleep(5000);
         List<Reference> foundReferences = ResourceCatalog.getInstance().searchReferences(category, pattern);
         Assert.assertNotNull(foundReferences);
-        Assert.assertEquals(2, foundReferences.size());
         Assert.assertEquals("City_And_Colour_–_Comin_Home.mp3", foundReferences.get(0).getName());
         Assert.assertEquals("City And Colour – Comin' Home.mp3", foundReferences.get(1).getName());
     }
