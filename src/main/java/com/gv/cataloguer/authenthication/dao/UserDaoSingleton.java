@@ -4,6 +4,8 @@ import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import java.sql.*;
+import java.util.*;
+import java.util.Date;
 
 public class UserDaoSingleton implements UserDao {
 
@@ -35,5 +37,38 @@ public class UserDaoSingleton implements UserDao {
                     stmt.getString(USER_NAME_INDEX), Role.valueOf(stmt.getString(USER_ROLE_INDEX)));
         }
         return user;
+    }
+
+    @Override
+    public Object[] getLastUpdateAndTraffic(int userId) {
+        Object[] lastUpdateAndTraffic = new Object[2];
+        try {
+            Connection connection = DatabaseConnectionManager.getDatabaseConnection();
+            PreparedStatement stmt = connection
+                    .prepareStatement("SELECT last_update, traffic from users_activity where id_user = ?");
+            stmt.setInt(1, userId);
+            ResultSet rS = stmt.executeQuery();
+            rS.next();
+            lastUpdateAndTraffic[0] = rS.getDate("last_update");
+            lastUpdateAndTraffic[1] = rS.getInt("traffic");
+        } catch (SQLException e){
+            System.out.println(e);
+        } finally {
+            return lastUpdateAndTraffic;
+        }
+    }
+
+    @Override
+    public void setLastUpdateAndTraffic(int userId, Date newLastUpdate, int newTraffic) {
+        try {
+            Connection connection = DatabaseConnectionManager.getDatabaseConnection();
+            PreparedStatement stmt = connection
+                    .prepareStatement("UPDATE users_activity SET last_update = ?, traffic = ?");
+            stmt.setDate(1, new java.sql.Date(newLastUpdate.getTime()));
+            stmt.setInt(2, newTraffic);
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            System.out.println(e);
+        }
     }
 }
