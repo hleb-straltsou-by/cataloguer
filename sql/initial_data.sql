@@ -7,5 +7,9 @@ insert into users(login, password, id_role) values
 ("vi@gmail.com", "4477", 2);
 
 insert into names(id_user, name) values
-(1, "Стрельцов Глеб"),
-(2, "Санько Вероника");
+(1, "Gleb Streltsov"),
+(2, "Veronika Sanko");
+
+insert into users_activity(id_user) values
+(1),
+(2);

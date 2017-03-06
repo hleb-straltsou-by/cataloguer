@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -25,6 +26,8 @@ public class Main extends Application{
         primaryStage.setMinHeight(MIN_HEIGHT_OF_FORM_WINDOW);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Cataloguer");
+        primaryStage.getIcons().add(new Image(getClass().getClassLoader()
+                .getResource("pictures/icons/favicon.jpg").toExternalForm()));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

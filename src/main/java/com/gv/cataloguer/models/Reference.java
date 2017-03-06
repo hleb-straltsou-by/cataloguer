@@ -1,5 +1,6 @@
 package com.gv.cataloguer.models;
 
+import java.io.File;
 import java.util.Date;
 
 public class Reference {
@@ -24,6 +25,10 @@ public class Reference {
         this.size = size;
         this.lastModified = lastModified;
         this.pathToResource = pathToResource;
+    }
+
+    public File getResource(){
+        return new File(pathToResource);
     }
 
     public int getId() {

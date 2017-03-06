@@ -17,16 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="823.0"
-            xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.gv.cataloguer.controllers.MainController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="627.0" prefWidth="823.0" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gv.cataloguer.controllers.MainController">
    <bottom>
       <HBox prefHeight="118.0" prefWidth="823.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="99.0" prefWidth="133.0">
                <children>
-                  <Label fx:id="logInLabel" alignment="TOP_LEFT" prefHeight="27.0" prefWidth="108.0"
-                         text="You are entered as: ">
+                  <Label fx:id="logInLabel" alignment="TOP_LEFT" prefHeight="27.0" prefWidth="108.0" text="You are entered as: ">
                      <VBox.margin>
                         <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
                      </VBox.margin>
@@ -34,8 +31,7 @@
                         <Font name="Arial Rounded MT Bold" size="11.0" />
                      </font>
                   </Label>
-                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="25.0"
-                          prefWidth="80.0" text="Logout">
+                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="80.0" text="Logout">
                      <VBox.margin>
                         <Insets bottom="10.0" left="15.0" right="10.0" />
                      </VBox.margin>
@@ -45,59 +41,62 @@
             <Separator orientation="VERTICAL" prefHeight="200.0" />
             <Label fx:id="suggestLabel" text="Click here to suggest material">
                <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                </HBox.margin>
                <font>
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="suggestButton" mnemonicParsing="false" text="Suggest!">
+            <Button fx:id="suggestButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Suggest!">
                <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
+            <Label fx:id="statusLabel" prefHeight="55.0" prefWidth="380.0" styleClass="statusLabel">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
          </children>
       </HBox>
    </bottom>
    <right>
-      <VBox prefHeight="445.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="486.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Separator>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addNewFile" prefHeight="0.0"
-                    prefWidth="80.0" text="Add">
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-             <Button fx:id="updateButton" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0"
-                     prefWidth="83.0" text="Update">
+             <Button fx:id="updateButton" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateCatalogFromRemoteDatabase" prefHeight="25.0" prefWidth="83.0" text="Update">
                  <VBox.margin>
-                     <Insets bottom="10.0" left="10.0" right="10.0" />
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="22.0" />
                  </VBox.margin>
              </Button>
-            <Button fx:id="deleteButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0"
-                    prefWidth="83.0" text="Delete">
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#addNewResource" prefHeight="0.0" prefWidth="80.0" text="Add">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="deleteButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Delete">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
             </Button>
             <Separator prefWidth="200.0" />
-            <ImageView fitHeight="324.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
-            <Separator prefHeight="12.0" prefWidth="100.0" />
+            <ImageView fitHeight="317.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
+            <Separator prefHeight="47.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin></Separator>
          </children>
       </VBox>
    </right>
    <top>
       <AnchorPane prefHeight="52.0" prefWidth="823.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0"
-                       promptText="Type something for search" fx:id="searchField" />
-            <Button layoutX="672.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0"
-                    text="Find" onAction="#searchResources"/>
+            <TextField fx:id="searchField" layoutX="202.0" layoutY="14.0" prefHeight="26.0" prefWidth="456.0" promptText="Type something for search" />
+            <Button layoutX="672.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchResources" prefHeight="25.0" prefWidth="52.0" text="Find" />
             <Label layoutX="14.0" layoutY="11.0" prefHeight="32.0" prefWidth="162.0" text="CATALOG">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
@@ -107,8 +106,7 @@
       </AnchorPane>
    </top>
    <left>
-      <ListView fx:id="categories" prefHeight="442.0" prefWidth="134.0" BorderPane.alignment="CENTER"
-                onMouseClicked="#selectCategory">
+      <ListView fx:id="categories" onMouseClicked="#selectCategory" prefHeight="442.0" prefWidth="134.0" BorderPane.alignment="CENTER">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="music" />
