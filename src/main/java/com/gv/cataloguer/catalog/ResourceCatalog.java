@@ -62,6 +62,11 @@ public class ResourceCatalog {
         }
     }
 
+    public void deleteResourceFromCatalog(String category, Reference ref){
+        ResourceDaoDatabase.getInstance().deleteResourceFromCategory(category, ref.getId());
+        getCategory(category).remove(ref);
+    }
+
     public void setMusic(List<Reference> music) {
         this.music = music;
     }

@@ -1,9 +1,7 @@
 package com.gv.cataloguer.authenthication.validation;
 
-import com.gv.cataloguer.authenthication.dao.UserDao;
 import com.gv.cataloguer.authenthication.dao.UserDaoSingleton;
 import com.gv.cataloguer.models.User;
-
 import java.sql.SQLException;
 
 public class UserValidator {
@@ -12,9 +10,7 @@ public class UserValidator {
         User user = null;
         try {
             user = UserDaoSingleton.getInstance().getUser(login, password);
-        } catch (SQLException e){
-            e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         } finally {
             return user;
