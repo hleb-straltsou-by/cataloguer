@@ -47,7 +47,7 @@
                   <Font name="Arial Rounded MT Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="suggestButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Suggest!">
+            <Button fx:id="suggestButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Suggest!" onAction="#suggestResource">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -78,7 +78,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="deleteButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Delete">
+            <Button fx:id="deleteButton" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Delete" onAction="#deleteSelectedResource">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
@@ -124,7 +124,7 @@
               <columns>
                 <TreeTableColumn fx:id="nameColumn" prefWidth="261.0" text="Name" />
                 <TreeTableColumn fx:id="sizeColumn" prefWidth="112.0" text="Size (in bytes)" />
-                 <TreeTableColumn fx:id="lastModifiedColumn" prefWidth="221.0" text="Last modified" />
+                 <TreeTableColumn fx:id="lastModifiedColumn" prefWidth="221.0" text="Last updated" />
               </columns>
             </TreeTableView>
          </children>
