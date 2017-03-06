@@ -3,6 +3,10 @@ package com.gv.cataloguer.controllers;
 import com.gv.cataloguer.authenthication.dao.UserDaoSingleton;
 import com.gv.cataloguer.browsing.DesktopBrowser;
 import com.gv.cataloguer.catalog.ResourceCatalog;
+import com.gv.cataloguer.email.EmailService;
+import com.gv.cataloguer.email.EmailServiceGMail;
+import com.gv.cataloguer.email.concurrency.EmailSender;
+import com.gv.cataloguer.email.concurrency.EmailSenderWithAttachment;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import com.gv.cataloguer.start.Main;
@@ -21,6 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -124,12 +129,6 @@ public class MainController {
         Reference rootReference = new Reference(category);
         treeTableView.setRoot(new TreeItem<>(rootReference));
         TreeItem rootItem = treeTableView.getRoot();
-        rootItem.getChildren().addListener(new ListChangeListener() {
-            @Override
-            public void onChanged(Change c) {
-
-            }
-        });
         rootItem.setExpanded(true);
         List<Reference> references = ResourceCatalog.getInstance().getCategory(category);
         for(Reference ref : references){
@@ -150,9 +149,9 @@ public class MainController {
     }
 
     public void updateCatalogFromRemoteDatabase(ActionEvent actionEvent) {
-//        updateButton.setDisable(true);
-//        ResourceCatalog.getInstance().updateCatalog();
-//        updateButton.setDisable(false);
+        updateButton.setDisable(true);
+        ResourceCatalog.getInstance().updateCatalog();
+        updateButton.setDisable(false);
     }
 
     public void addNewResource(ActionEvent actionEvent) throws IOException {
@@ -168,10 +167,44 @@ public class MainController {
         }
     }
 
+    public void deleteSelectedResource(ActionEvent actionEvent) {
+        Reference ref = treeTableView.getSelectionModel().getSelectedItem().getValue();
+        String category = categories.getSelectionModel().getSelectedItem();
+        ResourceCatalog.getInstance().deleteResourceFromCatalog(category, ref);
+        refreshTableContentFromLocalCatalog(category);
+    }
+
+    public void suggestResource(ActionEvent actionEvent) {
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(Main.getMainStage());
+        if(file != null){
+            String from = "ka1oken4by@gmail.com";
+            String to = "gleb.streltsov.4by@gmail.com";
+            String subject = "Proposal to add new resources";
+            String messageText = "Hey! Anonymous guest suggest to add new resource to remote catalog." +
+                    " Suggesting resource is attached below";
+            List<String> destinationList = new ArrayList<>(1);
+            destinationList.add(to);
+            EmailSenderWithAttachment sender = new EmailSenderWithAttachment(from, destinationList,
+                    subject, messageText, file);
+            sender.start();
+        }
+    }
+
     private void executeUpdateToCatalog(File file){
         String category = categories.getSelectionModel().getSelectedItem();
         ResourceCatalog.getInstance().addResourceToCatalog(category, file);
         refreshTableContentFromLocalCatalog(category);
+        sendNotificationToRegisteredUsers();
+    }
+
+    private void sendNotificationToRegisteredUsers(){
+        List<String> emails = UserDaoSingleton.getInstance().getAllUserEmails();
+        String from = "ka1oken4by@gmail.com";
+        String subject = "Catalog notification";
+        String messageText = "Hey! New resources were added to catalog! Check them out!";
+        Thread sender = new EmailSender(from, emails, subject, messageText);
+        sender.start();
     }
 
     private void addNewResourceCheckingLimits(File file){
@@ -183,15 +216,18 @@ public class MainController {
             executeUpdateToCatalog(file);
             UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB);
+            sendNotificationToRegisteredUsers();
         } else if((currentDate.getTime() - ((Date)lastUpdateAndTraffic[0]).getTime()) / (MILLIS_IN_HOUR)
                 > HOURS_IN_DAY && (file.length() / (BYTES_IN_MB)) <= Role.getDefaultUserLimit()){
             executeUpdateToCatalog(file);
             UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB);
+            sendNotificationToRegisteredUsers();
         } else if(((int)lastUpdateAndTraffic[1]*BYTES_IN_MB + (int)file.length()) / BYTES_IN_MB <= Role.getDefaultUserLimit()){
             executeUpdateToCatalog(file);
             UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB + (int)lastUpdateAndTraffic[1]);
+            sendNotificationToRegisteredUsers();
         } else {
             sendFailMessage();
         }

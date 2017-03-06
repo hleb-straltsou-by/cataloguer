@@ -59,3 +59,10 @@ create table users_activity(
   traffic int,
   foreign key(id_user) references users(id_user)
 );
+
+
+create table emails(
+  id_user int not null,
+  email varchar(60) not null,
+  foreign key(id_user) references users(id_user)
+);
