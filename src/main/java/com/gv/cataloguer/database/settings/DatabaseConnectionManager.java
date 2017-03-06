@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnectionManager {
+
     private static final String DATABASE_URL = "database.url";
     private static final String DATABASE_NAME = "database.name";
     private static final String DATABASE_USER = "database.user";
@@ -20,7 +21,8 @@ public class DatabaseConnectionManager {
         Connection connection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(dbUrl + dbName, dbUser, dbPassword);
+            connection = DriverManager.getConnection(dbUrl + dbName +
+                    "?autoReconnect=true&useSSL=false", dbUser, dbPassword);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
