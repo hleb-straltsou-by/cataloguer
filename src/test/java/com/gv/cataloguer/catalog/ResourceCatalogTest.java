@@ -18,5 +18,4 @@ public class ResourceCatalogTest {
         Assert.assertEquals("City_And_Colour_–_Comin_Home.mp3", foundReferences.get(0).getName());
         Assert.assertEquals("City And Colour – Comin' Home.mp3", foundReferences.get(1).getName());
     }
-
 }
