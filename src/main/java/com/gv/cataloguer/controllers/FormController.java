@@ -1,6 +1,7 @@
 package com.gv.cataloguer.controllers;
 
 import com.gv.cataloguer.authenthication.validation.UserValidator;
+import com.gv.cataloguer.cryptography.CryptographerXOR;
 import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.start.Main;
 import com.gv.cataloguer.models.Role;
@@ -14,25 +15,39 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
+/**
+ * This is a controller class which is used to bind gui and business logic
+ * according MVC pattern
+ */
 public class FormController {
 
     @FXML
+    /** object for representing errors */
     private Label errorLabel;
 
     @FXML
+    /** object used for input login of user */
     private TextField loginField;
 
     @FXML
+    /** object used for input password of user */
     private PasswordField passwordField;
 
+    /**  object used to enter into main page as guest */
     private static final User USER_GUEST = new User("Guest", Role.GUEST);
+
+    /**  object for storing entered user */
     public static User currentUser;
 
+    /**
+     * 
+     * @param actionEvent
+     */
     public void logIn(ActionEvent actionEvent) {
-        User user = UserValidator.checkLogin(loginField.getText(), passwordField.getText());
+        User user = UserValidator.checkLogin(loginField.getText(), CryptographerXOR.getInstance()
+                .encrypt(passwordField.getText()));
         if(user == null){
             setAuthenticationError();
             return;

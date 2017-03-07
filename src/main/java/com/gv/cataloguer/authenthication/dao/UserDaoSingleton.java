@@ -1,5 +1,6 @@
 package com.gv.cataloguer.authenthication.dao;
 
+import com.gv.cataloguer.cryptography.CryptographerXOR;
 import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
 import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.Role;
@@ -11,25 +12,51 @@ import java.util.List;
 
 public class UserDaoSingleton implements UserDao {
 
+    /** single instance of class */
     private static final UserDaoSingleton INSTANCE = new UserDaoSingleton();
+
+    /** index of parameter in stored procedure with users login */
     private static final int USER_LOGIN_INDEX = 1;
+
+    /** index of parameter stored procedure with users password */
     private static final int USER_PASSWORD_INDEX = 2;
+
+    /** index of parameter stored procedure with users id */
     private static final int USER_ID_INDEX = 3;
+
+    /** index of parameter stored procedure with users role */
     private static final int USER_ROLE_INDEX = 4;
+
+    /** index of parameter stored procedure with users name */
     private static final int USER_NAME_INDEX = 5;
 
+    /**
+     * private constructor of class for implementing singleton pattern
+     */
     private UserDaoSingleton() {}
 
+    /**
+     * Returns single instance of class
+     * @return UserDaoSingleton instance
+     */
     public static UserDaoSingleton getInstance() {
         return INSTANCE;
     }
 
-    public User getUser(String login, String password) throws SQLException, ClassNotFoundException {
+    /**
+     * searches and returns User object @see User according password and login that stored in remote database
+     * @param login - users login property
+     * @param password - users password property, stored only in remote database
+     * @return User object
+     * @throws SQLException - if there are troubles in SQL logic
+     * @throws ClassNotFoundException - if database driver is not loaded
+     */
+    public User getUser(final String login, final String password) throws SQLException, ClassNotFoundException {
         User user = null;
         Connection connection = DatabaseConnectionManager.getDatabaseConnection();
         CallableStatement stmt = connection.prepareCall("call get_user(?, ?, ?, ?, ?)");
         stmt.setString(USER_LOGIN_INDEX, login);
-        stmt.setString(USER_PASSWORD_INDEX, password);
+        stmt.setString(USER_PASSWORD_INDEX, CryptographerXOR.getInstance().decrypt(password));
         stmt.registerOutParameter(USER_ID_INDEX, Types.INTEGER);
         stmt.registerOutParameter(USER_ROLE_INDEX, Types.VARCHAR);
         stmt.registerOutParameter(USER_NAME_INDEX, Types.VARCHAR);
@@ -42,6 +69,10 @@ public class UserDaoSingleton implements UserDao {
     }
 
     @Override
+    /**
+     * retrieves all email addresses of registered users from remote database
+     * @return list of users emails in String objects
+     */
     public List<String> getAllUserEmails() {
         List<String> emails = null;
         try {
@@ -63,7 +94,14 @@ public class UserDaoSingleton implements UserDao {
     }
 
     @Override
-    public Object[] getLastUpdateAndTraffic(int userId) {
+    /**
+     * searches and returns two-sized array of Objects of default users values of last added files and its size
+     * from remote database
+     * @param userId - primary key of registered user
+     * @return two-sized array of Objects, first element of array - java.sql.Date object,
+     * second - added traffic in megabytes
+     */
+    public Object[] getLastUpdateAndTraffic(final int userId) {
         Object[] lastUpdateAndTraffic = new Object[2];
         try {
             Connection connection = DatabaseConnectionManager.getDatabaseConnection();
@@ -82,7 +120,13 @@ public class UserDaoSingleton implements UserDao {
     }
 
     @Override
-    public void setLastUpdateAndTraffic(int userId, Date newLastUpdate, int newTraffic) {
+    /**
+     * Sets new lastUpdate date and used traffic in megabytes in remote database
+     * @param userId - primary key of registered user
+     * @param newLastUpdate - date of last added files
+     * @param newTraffic - used traffic in megabytes
+     */
+    public void setLastUpdateAndTraffic(final int userId, final Date newLastUpdate, final int newTraffic) {
         try {
             Connection connection = DatabaseConnectionManager.getDatabaseConnection();
             PreparedStatement stmt = connection

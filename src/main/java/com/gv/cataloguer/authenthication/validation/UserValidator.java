@@ -5,8 +5,24 @@ import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.User;
 import java.sql.SQLException;
 
+/**
+ * Not-instantiated class for checking users login and password,
+ * delegates getting of User object to UserDao pattern
+ */
 public class UserValidator {
 
+    /**
+     * private constructor of class, which implement non-instantiation
+     */
+    private UserValidator(){}
+
+    /**
+     * delegates getting of User object @see User to UserDao pattern,
+     * if appeared exceptions, then used AppLogger object @see AppLogger for logging issues
+     * @param login - users login property
+     * @param password - users encrypt password property, stored only in data storage
+     * @return User object
+     */
     public static User checkLogin(String login, String password) {
         User user = null;
         try {
