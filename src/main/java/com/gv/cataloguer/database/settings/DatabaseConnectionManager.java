@@ -1,5 +1,7 @@
 package com.gv.cataloguer.database.settings;
 
+import com.gv.cataloguer.logging.AppLogger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,7 +26,7 @@ public class DatabaseConnectionManager {
             connection = DriverManager.getConnection(dbUrl + dbName +
                     "?autoReconnect=true&useSSL=false", dbUser, dbPassword);
         } catch (SQLException e) {
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         } finally {
             return connection;
         }

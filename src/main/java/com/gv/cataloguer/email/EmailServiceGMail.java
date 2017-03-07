@@ -1,5 +1,7 @@
 package com.gv.cataloguer.email;
 
+import com.gv.cataloguer.logging.AppLogger;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -76,7 +78,7 @@ public class EmailServiceGMail implements EmailService {
             message.setContent(multipart);
             Transport.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 }

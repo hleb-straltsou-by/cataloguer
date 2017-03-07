@@ -2,3 +2,4 @@
 *.iml
 /target
 /local catalog
+/log

@@ -4,7 +4,6 @@ import com.gv.cataloguer.models.User;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public class UserValidatorTest {
     @Test
     public void checkLogin() throws Exception {
