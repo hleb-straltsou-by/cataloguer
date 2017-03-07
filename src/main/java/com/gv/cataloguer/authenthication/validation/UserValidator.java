@@ -1,6 +1,7 @@
 package com.gv.cataloguer.authenthication.validation;
 
 import com.gv.cataloguer.authenthication.dao.UserDaoSingleton;
+import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.User;
 import java.sql.SQLException;
 
@@ -11,7 +12,7 @@ public class UserValidator {
         try {
             user = UserDaoSingleton.getInstance().getUser(login, password);
         } catch (SQLException | ClassNotFoundException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         } finally {
             return user;
         }

@@ -1,6 +1,7 @@
 package com.gv.cataloguer.controllers;
 
 import com.gv.cataloguer.authenthication.validation.UserValidator;
+import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.start.Main;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class FormController {
+
     @FXML
     private Label errorLabel;
 
@@ -26,7 +28,6 @@ public class FormController {
     @FXML
     private PasswordField passwordField;
 
-    private static final String AUTHENTICATION_ERROR = "Error! Please, check input email address or password...";
     private static final User USER_GUEST = new User("Guest", Role.GUEST);
     public static User currentUser;
 
@@ -48,7 +49,7 @@ public class FormController {
     }
 
     private void setAuthenticationError(){
-        errorLabel.setText(AUTHENTICATION_ERROR);
+        errorLabel.setText("Error! Please, check input email address or password...");
     }
 
     private void forwardToMainPage(User user){
@@ -63,7 +64,7 @@ public class FormController {
             stage.setScene(scene);
             stage.show();
         }catch (IOException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 }

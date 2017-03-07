@@ -2,6 +2,7 @@ package com.gv.cataloguer.catalog.dao;
 
 import com.gv.cataloguer.catalog.ResourceCatalog;
 import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
+import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.Reference;
 import java.io.*;
 import java.sql.Connection;
@@ -50,7 +51,7 @@ public class ResourceDaoDatabase implements ResourceDao{
                         new Date(file.lastModified()), file.getAbsolutePath()));
             }
             }catch (SQLException e){
-                System.err.println(e);
+                AppLogger.getLogger().error(e.getMessage());
             }finally {
                 return references;
             }
@@ -78,7 +79,7 @@ public class ResourceDaoDatabase implements ResourceDao{
             reference = new Reference(rS.getInt("id"), file.getName(), file.length(),
                     new Date(file.lastModified()), file.getAbsolutePath());
         }catch (SQLException e){
-            System.err.println(e);
+            AppLogger.getLogger().error(e.getMessage());
         }finally {
             return reference;
         }
@@ -100,25 +101,21 @@ public class ResourceDaoDatabase implements ResourceDao{
             connection.commit();
             addResourceToLocalCatalog(category, file);
         } catch (FileNotFoundException | SQLException e) {
-            System.err.println(e);
+            AppLogger.getLogger().error(e.getMessage());
             if (connection != null) {
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    System.err.println(ex);
+                    AppLogger.getLogger().error(ex.getMessage());
                 }
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
-                System.err.println(ex);
+                AppLogger.getLogger().error(ex.getMessage());
             }
         }
-    }
-
-    public List<Integer> updateCategory(String category) {
-        return null;
     }
 
     private void addResourceToLocalCatalog(String category, File file){
@@ -133,7 +130,7 @@ public class ResourceDaoDatabase implements ResourceDao{
                     new Date(file.lastModified()), file.getAbsolutePath());
             ResourceCatalog.getInstance().getCategory(category).add(ref);
         } catch (SQLException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 
@@ -145,7 +142,7 @@ public class ResourceDaoDatabase implements ResourceDao{
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 }

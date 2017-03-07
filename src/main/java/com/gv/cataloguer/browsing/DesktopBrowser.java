@@ -1,5 +1,7 @@
 package com.gv.cataloguer.browsing;
 
+import com.gv.cataloguer.logging.AppLogger;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,7 @@ public class DesktopBrowser {
         try {
             desktop.open(file);
         } catch (IOException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 }
