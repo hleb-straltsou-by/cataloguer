@@ -2,14 +2,29 @@ package com.gv.cataloguer.cryptography;
 
 import java.util.ResourceBundle;
 
+/**
+ * implements Cryptographer interface according XOR crypt algorithm
+ */
 public class CryptographerXOR implements Cryptographer {
 
+    /** single instance of class */
     private static final Cryptographer INSTANCE = new CryptographerXOR();
+
+    /** object for extracting properties from resource bundle cryptoKey.properties */
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("cryptoKey");
+
+    /** name of property in resource bundle that correspond to crypto key */
     private static final String KEY_PROPERTY_NAME = "key";
 
+    /**
+     * private constructor of class for implementing singleton pattern
+     */
     private CryptographerXOR(){}
 
+    /**
+     * Returns single instance of class
+     * @return Cryptographer instance
+     */
     public static Cryptographer getInstance(){
         return INSTANCE;
     }
