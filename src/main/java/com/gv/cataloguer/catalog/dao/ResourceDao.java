@@ -13,4 +13,6 @@ public interface ResourceDao {
     void addResourceToCategory(final String category, File file);
 
     List<Integer> updateCategory(final String category);
+
+    void deleteResourceFromCategory(String category, int id);
 }

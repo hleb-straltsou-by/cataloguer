@@ -27,7 +27,7 @@ public class FormController {
     private PasswordField passwordField;
 
     private static final String AUTHENTICATION_ERROR = "Error! Please, check input email address or password...";
-    private static final User USER_GUEST = new User(Role.GUEST);
+    private static final User USER_GUEST = new User("Guest", Role.GUEST);
     public static User currentUser;
 
     public void logIn(ActionEvent actionEvent) {

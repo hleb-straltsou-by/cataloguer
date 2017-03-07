@@ -4,8 +4,9 @@ import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserDaoSingleton implements UserDao {
 
@@ -37,6 +38,27 @@ public class UserDaoSingleton implements UserDao {
                     stmt.getString(USER_NAME_INDEX), Role.valueOf(stmt.getString(USER_ROLE_INDEX)));
         }
         return user;
+    }
+
+    @Override
+    public List<String> getAllUserEmails() {
+        List<String> emails = null;
+        try {
+            Connection connection = DatabaseConnectionManager.getDatabaseConnection();
+            PreparedStatement stmt = connection.prepareStatement("SELECT email from emails");
+            ResultSet rS = stmt.executeQuery();
+            rS.last();
+            int rowsCount = rS.getRow();
+            emails = new ArrayList<>(rowsCount);
+            rS.beforeFirst();
+            while(rS.next()){
+                emails.add(rS.getString("email"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            return emails;
+        }
     }
 
     @Override

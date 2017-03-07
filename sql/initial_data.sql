@@ -13,3 +13,7 @@ insert into names(id_user, name) values
 insert into users_activity(id_user) values
 (1),
 (2);
+
+insert into emails(id_user, email) values
+(1, "gleb.streltsov.4by@gmail.com"),
+(2, "vi@gmail.com");

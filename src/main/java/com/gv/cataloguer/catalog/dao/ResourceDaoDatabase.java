@@ -136,4 +136,16 @@ public class ResourceDaoDatabase implements ResourceDao{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void deleteResourceFromCategory(String category, int id) {
+        try{
+            Connection connection = DatabaseConnectionManager.getDatabaseConnection();
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM " + category + " where id = ?");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
