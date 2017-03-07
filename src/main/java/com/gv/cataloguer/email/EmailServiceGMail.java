@@ -15,18 +15,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * implementation of EmailService interface using GMail via TLS and singleton pattern
+ */
 public class EmailServiceGMail implements EmailService {
 
+    /** single instance of class */
     private static EmailServiceGMail INSTANCE = new EmailServiceGMail();
 
+    /** java mail session object */
     private static Session SESSION;
 
+    /** object for retrieving mail settings */
     private static Properties PROPERTIES;
 
+    /**
+     * Returns single instance of class
+     * @return EmailServiceGMail instance
+     */
     public static EmailServiceGMail getInstance(){
         return INSTANCE;
     }
 
+    /**
+     * initializes session and properties objects for getting ready sending emails
+     */
     private EmailServiceGMail(){
         InputStream input = getClass().getClassLoader().getResourceAsStream("mail.properties");
         try {
