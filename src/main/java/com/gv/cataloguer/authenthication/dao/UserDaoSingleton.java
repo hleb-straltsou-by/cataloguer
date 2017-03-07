@@ -1,6 +1,7 @@
 package com.gv.cataloguer.authenthication.dao;
 
 import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
+import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import java.sql.*;
@@ -55,7 +56,7 @@ public class UserDaoSingleton implements UserDao {
                 emails.add(rS.getString("email"));
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         } finally {
             return emails;
         }
@@ -74,7 +75,7 @@ public class UserDaoSingleton implements UserDao {
             lastUpdateAndTraffic[0] = rS.getDate("last_update");
             lastUpdateAndTraffic[1] = rS.getInt("traffic");
         } catch (SQLException e){
-            System.out.println(e);
+            AppLogger.getLogger().error(e.getMessage());
         } finally {
             return lastUpdateAndTraffic;
         }

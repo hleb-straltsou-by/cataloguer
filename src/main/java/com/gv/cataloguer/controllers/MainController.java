@@ -7,6 +7,7 @@ import com.gv.cataloguer.email.EmailService;
 import com.gv.cataloguer.email.EmailServiceGMail;
 import com.gv.cataloguer.email.concurrency.EmailSender;
 import com.gv.cataloguer.email.concurrency.EmailSenderWithAttachment;
+import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import com.gv.cataloguer.start.Main;
@@ -120,7 +121,7 @@ public class MainController {
             stage.setScene(scene);
             stage.show();
         }catch (IOException e){
-            e.printStackTrace();
+            AppLogger.getLogger().error(e.getMessage());
         }
     }
 
