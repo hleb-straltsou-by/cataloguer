@@ -7,3 +7,8 @@ This desktop app is designed to store audio, video, documents and books in remot
 
 # Email service
 If you just a guest you could suggest resources througth the email message, which will contain resources, that you suggest.
+
+# Additional features
+- storing data in remote database
+- auxiliary concurrency to improve perfomance
+- using logger for quick bug fix
