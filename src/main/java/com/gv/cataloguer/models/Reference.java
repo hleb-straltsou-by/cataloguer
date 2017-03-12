@@ -3,16 +3,24 @@ package com.gv.cataloguer.models;
 import java.io.File;
 import java.util.Date;
 
+/**
+ * realizes reference for file resources
+ */
 public class Reference {
 
+    /** property - id of reference */
     private int id = 0;
 
+    /** property - name of reference */
     private String name = "";
 
+    /** property - size of resource */
     private long size = 0;
 
+    /** property - last modification of resource in local catalog */
     private Date lastModified = null;
 
+    /** property - path to resource */
     private String pathToResource = "";
 
     public Reference(String name){
@@ -51,19 +59,7 @@ public class Reference {
         this.size = size;
     }
 
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
     public String getPathToResource() {
         return pathToResource;
-    }
-
-    public void setPathToResource(String pathToResource) {
-        this.pathToResource = pathToResource;
     }
 }

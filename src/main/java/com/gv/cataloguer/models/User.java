@@ -1,8 +1,17 @@
 package com.gv.cataloguer.models;
 
+/**
+ * specifies properties of user in authenthication system
+ */
 public class User {
+
+    /** property - id of user */
     private int userId = 0;
+
+    /** property - login of user */
     private String login = "";
+
+    /** property - name of user */
     private String name = "";
     private Role role;
 

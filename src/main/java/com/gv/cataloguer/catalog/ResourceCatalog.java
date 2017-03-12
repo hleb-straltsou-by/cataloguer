@@ -105,8 +105,8 @@ public class ResourceCatalog {
 
     /**
      * deletes resource from remote, local catalogs and from list of references
-     * according reference object and category
-     * @param category - name of category of files
+     * according reference object and selected category
+     * @param category - name of category with files
      * @param ref - reference on deleting resource
      */
     public void deleteResourceFromCatalog(String category, Reference ref){
