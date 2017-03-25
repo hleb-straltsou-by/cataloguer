@@ -11,6 +11,11 @@ public class AppLogger {
     private static final Logger log = Logger.getLogger(AppLogger.class);
 
     /**
+     * private constructor of class, which implement non-instantiation
+     */
+    private AppLogger(){}
+
+    /**
      * @return Logger object
      */
     public static Logger getLogger(){
