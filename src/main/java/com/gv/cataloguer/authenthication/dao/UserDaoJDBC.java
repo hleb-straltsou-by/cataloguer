@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserDaoSingleton implements UserDao {
-
-    /** single instance of class */
-    private static final UserDaoSingleton INSTANCE = new UserDaoSingleton();
+public class UserDaoJDBC implements UserDao {
 
     /** index of parameter in stored procedure with users login */
     private static final int USER_LOGIN_INDEX = 1;
@@ -31,19 +28,6 @@ public class UserDaoSingleton implements UserDao {
     private static final int USER_NAME_INDEX = 5;
 
     /**
-     * private constructor of class for implementing singleton pattern
-     */
-    private UserDaoSingleton() {}
-
-    /**
-     * Returns single instance of class
-     * @return UserDaoSingleton instance
-     */
-    public static UserDaoSingleton getInstance() {
-        return INSTANCE;
-    }
-
-    /**
      * searches and returns User object @see User according password and login that stored in remote database
      * @param login - users login property
      * @param password - users password property, stored only in remote database
@@ -51,21 +35,26 @@ public class UserDaoSingleton implements UserDao {
      * @throws SQLException - if there are troubles in SQL logic
      * @throws ClassNotFoundException - if database driver is not loaded
      */
-    public User getUser(final String login, final String password) throws SQLException, ClassNotFoundException {
+    public User getUser(final String login, final String password) {
         User user = null;
-        Connection connection = DatabaseConnectionManager.getDatabaseConnection();
-        CallableStatement stmt = connection.prepareCall("call get_user(?, ?, ?, ?, ?)");
-        stmt.setString(USER_LOGIN_INDEX, login);
-        stmt.setString(USER_PASSWORD_INDEX, CryptographerXOR.getInstance().decrypt(password));
-        stmt.registerOutParameter(USER_ID_INDEX, Types.INTEGER);
-        stmt.registerOutParameter(USER_ROLE_INDEX, Types.VARCHAR);
-        stmt.registerOutParameter(USER_NAME_INDEX, Types.VARCHAR);
-        stmt.execute();
-        if(stmt.getInt(USER_ID_INDEX) != 0) {
-            user = new User(stmt.getInt(USER_ID_INDEX), login,
-                    stmt.getString(USER_NAME_INDEX), Role.valueOf(stmt.getString(USER_ROLE_INDEX)));
+        try {
+            Connection connection = DatabaseConnectionManager.getDatabaseConnection();
+            CallableStatement stmt = connection.prepareCall("call get_user(?, ?, ?, ?, ?)");
+            stmt.setString(USER_LOGIN_INDEX, login);
+            stmt.setString(USER_PASSWORD_INDEX, CryptographerXOR.getInstance().decrypt(password));
+            stmt.registerOutParameter(USER_ID_INDEX, Types.INTEGER);
+            stmt.registerOutParameter(USER_ROLE_INDEX, Types.VARCHAR);
+            stmt.registerOutParameter(USER_NAME_INDEX, Types.VARCHAR);
+            stmt.execute();
+            if (stmt.getInt(USER_ID_INDEX) != 0) {
+                user = new User(stmt.getInt(USER_ID_INDEX), login,
+                        stmt.getString(USER_NAME_INDEX), Role.valueOf(stmt.getString(USER_ROLE_INDEX)));
+            }
+        } catch (SQLException e){
+            AppLogger.getLogger().error(e);
+        } finally {
+            return user;
         }
-        return user;
     }
 
     @Override
