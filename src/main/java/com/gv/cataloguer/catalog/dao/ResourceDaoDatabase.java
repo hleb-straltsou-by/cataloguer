@@ -4,6 +4,7 @@ import com.gv.cataloguer.catalog.ResourceCatalog;
 import com.gv.cataloguer.database.settings.DatabaseConnectionManager;
 import com.gv.cataloguer.logging.AppLogger;
 import com.gv.cataloguer.models.Reference;
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,12 +51,12 @@ public class ResourceDaoDatabase implements ResourceDao{
                 references.add(new Reference(rS.getInt("id"), file.getName(), file.length(),
                         new Date(file.lastModified()), file.getAbsolutePath()));
             }
-            }catch (SQLException e){
-                AppLogger.getLogger().error(e.getMessage());
-            }finally {
-                return references;
-            }
-         }
+        }catch (SQLException e){
+            AppLogger.getLogger().error(e.getMessage());
+        }finally {
+            return references;
+        }
+    }
 
     public Reference getResourceFromCategory(String category, int id) {
         Connection connection;
@@ -70,7 +71,7 @@ public class ResourceDaoDatabase implements ResourceDao{
             ResultSet rS = stmt.executeQuery();
             rS.next();
             File file = new File(PATH_TO_LOCAL_CATALOG + category + "\\"
-                        + rS.getString("name"));
+                    + rS.getString("name"));
             outputStream = new FileOutputStream(file);
             inputStream = rS.getBinaryStream("resource");
             while(inputStream.read(buffer) > 0){

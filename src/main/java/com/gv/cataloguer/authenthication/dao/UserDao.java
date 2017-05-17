@@ -19,7 +19,7 @@ public interface UserDao {
      * @throws SQLException - if there are troubles in SQL logic
      * @throws ClassNotFoundException - if database driver is not loaded
      */
-    User getUser(final String login, final String password) throws SQLException, ClassNotFoundException;
+    User getUser(final String login, final String password);
 
     /**
      * retrieves all email addresses of registered users from data storage

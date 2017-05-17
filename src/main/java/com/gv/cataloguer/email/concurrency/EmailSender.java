@@ -1,6 +1,6 @@
 package com.gv.cataloguer.email.concurrency;
 
-import com.gv.cataloguer.email.EmailServiceGMail;
+import com.gv.cataloguer.email.EmailService;
 import java.util.List;
 
 /**
@@ -8,6 +8,8 @@ import java.util.List;
  * list of addresses
  */
 public class EmailSender extends Thread {
+
+    private EmailService service;
 
     /** property - who sends email message */
     private String from;
@@ -20,6 +22,10 @@ public class EmailSender extends Thread {
 
     /** property - message content */
     private String messageText;
+
+    public EmailSender(EmailService service){
+        this.service = service;
+    }
 
     /**
      * constructor of thread object that specifies parameters of email sending
@@ -41,7 +47,23 @@ public class EmailSender extends Thread {
      */
     public void run() {
         for(String to : destinationList) {
-            EmailServiceGMail.getInstance().sendMessage(from, to, subject, messageText);
+            service.sendMessage(from, to, subject, messageText);
         }
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setDestinationList(List<String> destinationList) {
+        this.destinationList = destinationList;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 }

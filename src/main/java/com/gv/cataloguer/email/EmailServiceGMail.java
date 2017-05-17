@@ -1,7 +1,6 @@
 package com.gv.cataloguer.email;
 
 import com.gv.cataloguer.logging.AppLogger;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -20,22 +19,11 @@ import java.util.Properties;
  */
 public class EmailServiceGMail implements EmailService {
 
-    /** single instance of class */
-    private static EmailServiceGMail INSTANCE = new EmailServiceGMail();
-
     /** java mail session object */
     private static Session SESSION;
 
     /** object for retrieving mail settings */
     private static Properties PROPERTIES;
-
-    /**
-     * Returns single instance of class
-     * @return EmailServiceGMail instance
-     */
-    public static EmailServiceGMail getInstance(){
-        return INSTANCE;
-    }
 
     /**
      * initializes session and properties objects for getting ready sending emails

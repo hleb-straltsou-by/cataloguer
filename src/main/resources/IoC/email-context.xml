@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="emailSender" class="com.gv.cataloguer.email.concurrency.EmailSender" scope="prototype">
+        <constructor-arg ref="emailServiceGmail" />
+    </bean>
+
+    <bean id="emailSenderWithAttachment" class="com.gv.cataloguer.email.concurrency.EmailSenderWithAttachment" scope="prototype">
+        <constructor-arg ref="emailServiceGmail" />
+    </bean>
+
+    <bean id="emailServiceGmail" class="com.gv.cataloguer.email.EmailServiceGMail" scope="prototype" />
+
+</beans>

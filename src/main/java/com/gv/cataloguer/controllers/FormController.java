@@ -3,18 +3,24 @@ package com.gv.cataloguer.controllers;
 import com.gv.cataloguer.authenthication.validation.UserValidator;
 import com.gv.cataloguer.cryptography.CryptographerXOR;
 import com.gv.cataloguer.logging.AppLogger;
-import com.gv.cataloguer.start.Main;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
+import com.gv.cataloguer.start.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import java.io.IOException;
 
 /**
@@ -35,11 +41,18 @@ public class FormController {
     /** object used for input password of user */
     private PasswordField passwordField;
 
-    /**  object used to enter into main page as guest */
+    /** object used to enter into main page as guest */
     private static final User USER_GUEST = new User("Guest", Role.GUEST);
 
-    /**  object for storing entered user */
+    /** object for storing entered user */
     public static User currentUser;
+
+    private ApplicationContext context = new ClassPathXmlApplicationContext("IoC/authenthication-context.xml");
+
+    private static final String VALIDATOR_BEAN = "userValidator";
+
+    /** validator object used to authenticate users*/
+    private UserValidator validator = (UserValidator)context.getBean(VALIDATOR_BEAN);
 
     /**
      * checks if input password and login are valid, if it is,
@@ -47,7 +60,7 @@ public class FormController {
      * @param actionEvent - JafaFx event for binding view and controller
      */
     public void logIn(ActionEvent actionEvent) {
-        User user = UserValidator.checkLogin(loginField.getText(), CryptographerXOR.getInstance()
+        User user = validator.checkLogin(loginField.getText(), CryptographerXOR.getInstance()
                 .encrypt(passwordField.getText()));
         if(user == null){
             setAuthenticationError();
@@ -61,7 +74,24 @@ public class FormController {
      * @param actionEvent - JafaFx event for binding view and controller
      */
     public void signUp(ActionEvent actionEvent) {
-        // TODO: upload register form
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/register.fxml"));
+            Scene scene = new Scene(root);
+            stage.setMinHeight(RegistrationController.MAX_HEIGHT_REGISTER_WINDOW);
+            stage.setMinWidth(RegistrationController.MAX_WIDTH_REGISTER_WINDOW);
+            stage.setMaxHeight(RegistrationController.MAX_HEIGHT_REGISTER_WINDOW);
+            stage.setMaxWidth(RegistrationController.MAX_WIDTH_REGISTER_WINDOW);
+            stage.setScene(scene);
+            stage.getIcons().add(new Image(getClass().getClassLoader()
+                    .getResource("pictures/icons/favicon.jpg").toExternalForm()));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow());
+            stage.setTitle("Registration");
+            stage.show();
+        } catch (IOException e) {
+            AppLogger.getLogger().error(e);
+        }
     }
 
     /**
@@ -87,6 +117,7 @@ public class FormController {
         try {
             currentUser = user;
             Stage stage = Main.getMainStage();
+            stage.close();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/main.fxml"));
             Scene scene = new Scene(root);
             stage.setResizable(true);

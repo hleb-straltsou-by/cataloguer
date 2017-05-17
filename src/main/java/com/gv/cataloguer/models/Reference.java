@@ -18,7 +18,7 @@ public class Reference {
     private long size = 0;
 
     /** property - last modification of resource in local catalog */
-    private Date lastModified = null;
+    private String lastModified;
 
     /** property - path to resource */
     private String pathToResource = "";
@@ -31,7 +31,7 @@ public class Reference {
         this.id = id;
         this.name = name;
         this.size = size;
-        this.lastModified = lastModified;
+        this.lastModified = lastModified.toString();
         this.pathToResource = pathToResource;
     }
 
@@ -61,5 +61,13 @@ public class Reference {
 
     public String getPathToResource() {
         return pathToResource;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 }

@@ -9,7 +9,7 @@ import com.gv.cataloguer.catalog.dao.ResourceDaoDatabase;
 public class ResourceCatalogInitializer implements Runnable{
 
     /**
-     * udates resource in local catalog from remote catalog and set lists of
+     * updates resource in local catalog from remote catalog and set lists of
      * resources references
      */
     public void run() {

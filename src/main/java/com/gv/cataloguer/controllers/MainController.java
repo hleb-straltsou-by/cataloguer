@@ -1,15 +1,15 @@
 package com.gv.cataloguer.controllers;
 
-import com.gv.cataloguer.authenthication.dao.UserDaoSingleton;
+import com.gv.cataloguer.authenthication.dao.UserDao;
 import com.gv.cataloguer.browsing.DesktopBrowser;
 import com.gv.cataloguer.catalog.ResourceCatalog;
 import com.gv.cataloguer.email.concurrency.EmailSender;
 import com.gv.cataloguer.email.concurrency.EmailSenderWithAttachment;
 import com.gv.cataloguer.logging.AppLogger;
+import com.gv.cataloguer.models.Reference;
 import com.gv.cataloguer.models.Role;
 import com.gv.cataloguer.models.User;
 import com.gv.cataloguer.start.Main;
-import com.gv.cataloguer.models.Reference;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +21,8 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,6 +103,22 @@ public class MainController {
     /** variable for storing count of hours in day */
     private static final int HOURS_IN_DAY = 24;
 
+    private ApplicationContext authenticationContext = new ClassPathXmlApplicationContext("IoC/authenthication-context.xml");
+
+    private static final String USER_DAO_BEAN = "userDaoJDBC";
+
+    private UserDao userDao = (UserDao) authenticationContext.getBean(USER_DAO_BEAN);
+
+    private ApplicationContext emailContext = new ClassPathXmlApplicationContext("IoC/email-context.xml");
+
+    private static final String EMAIL_SENDER_BEAN = "emailSender";
+
+    private static final String EMAIL_SENDER_WITH_ATTACHMENT_BEAN = "emailSenderWithAttachment";
+
+    private static final String EMAIL_SERVICE_BEAN = "emailServiceGmail";
+
+    private ResourceCatalog catalog = ResourceCatalog.getInstance();
+
     @FXML
     /**
      * initializes entered users name and visible elements according users role,
@@ -145,6 +163,7 @@ public class MainController {
     public void logout(ActionEvent actionEvent) {
         try {
             Stage stage = Main.getMainStage();
+            stage.close();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/form.fxml"));
             stage.setMinWidth(Main.MIN_WIDTH_OF_FORM_WINDOW);
             stage.setMinHeight(Main.MIN_HEIGHT_OF_FORM_WINDOW);
@@ -170,7 +189,7 @@ public class MainController {
         treeTableView.setRoot(new TreeItem<>(rootReference));
         TreeItem rootItem = treeTableView.getRoot();
         rootItem.setExpanded(true);
-        List<Reference> references = ResourceCatalog.getInstance().getCategory(category);
+        List<Reference> references = catalog.getCategory(category);
         for(Reference ref : references){
             rootItem.getChildren().add(new TreeItem<>(ref));
             rootReference.setSize(rootReference.getSize() + ref.getSize());
@@ -186,7 +205,7 @@ public class MainController {
     public void searchResources(ActionEvent actionEvent) {
         String category = categories.getSelectionModel().getSelectedItem();
         String pattern = searchField.getText();
-        List<Reference> foundReferences = ResourceCatalog.getInstance().searchReferences(category, pattern);
+        List<Reference> foundReferences = catalog.searchReferences(category, pattern);
         TreeItem rootItem = treeTableView.getRoot();
         rootItem.getChildren().clear();
         for(Reference ref : foundReferences){
@@ -201,7 +220,7 @@ public class MainController {
      */
     public void updateCatalogFromRemoteDatabase(ActionEvent actionEvent) {
         updateButton.setDisable(true);
-        ResourceCatalog.getInstance().updateCatalog();
+        catalog.updateCatalog();
         updateButton.setDisable(false);
     }
 
@@ -232,7 +251,7 @@ public class MainController {
     public void deleteSelectedResource(ActionEvent actionEvent) {
         Reference ref = treeTableView.getSelectionModel().getSelectedItem().getValue();
         String category = categories.getSelectionModel().getSelectedItem();
-        ResourceCatalog.getInstance().deleteResourceFromCatalog(category, ref);
+        catalog.deleteResourceFromCatalog(category, ref);
         refreshTableContentFromLocalCatalog(category);
     }
 
@@ -253,8 +272,12 @@ public class MainController {
                     " Suggesting resource is attached below";
             List<String> destinationList = new ArrayList<>(1);
             destinationList.add(to);
-            EmailSenderWithAttachment sender = new EmailSenderWithAttachment(from, destinationList,
-                    subject, messageText, file);
+            EmailSenderWithAttachment sender = (EmailSenderWithAttachment)emailContext.getBean(EMAIL_SENDER_WITH_ATTACHMENT_BEAN);
+            sender.setFrom(from);
+            sender.setDestinationList(destinationList);
+            sender.setSubject(subject);
+            sender.setMessageText(messageText);
+            sender.setResource(file);
             sender.start();
         }
     }
@@ -267,7 +290,7 @@ public class MainController {
      */
     private void executeUpdateToCatalog(File file){
         String category = categories.getSelectionModel().getSelectedItem();
-        ResourceCatalog.getInstance().addResourceToCatalog(category, file);
+        catalog.addResourceToCatalog(category, file);
         refreshTableContentFromLocalCatalog(category);
         sendNotificationToRegisteredUsers();
     }
@@ -277,11 +300,15 @@ public class MainController {
      * sends send notification to the users emails that content of remote catalog was updated
      */
     private void sendNotificationToRegisteredUsers(){
-        List<String> emails = UserDaoSingleton.getInstance().getAllUserEmails();
+        List<String> emails = userDao.getAllUserEmails();
         String from = "ka1oken4by@gmail.com";
         String subject = "Catalog notification";
         String messageText = "Hey! New resources were added to catalog! Check them out!";
-        Thread sender = new EmailSender(from, emails, subject, messageText);
+        EmailSender sender = (EmailSender)emailContext.getBean(EMAIL_SENDER_BEAN);
+        sender.setFrom(from);
+        sender.setDestinationList(emails);
+        sender.setSubject(subject);
+        sender.setMessageText(messageText);
         sender.start();
     }
 
@@ -293,23 +320,23 @@ public class MainController {
      */
     private void addNewResourceCheckingLimits(File file){
         int userId = FormController.currentUser.getUserId();
-        Object[] lastUpdateAndTraffic = UserDaoSingleton.getInstance()
+        Object[] lastUpdateAndTraffic = userDao
                 .getLastUpdateAndTraffic(userId);
         Date currentDate = new Date();
         if(lastUpdateAndTraffic[0] == null && (file.length() / (BYTES_IN_MB)) <= Role.getDefaultUserLimit()){
             executeUpdateToCatalog(file);
-            UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
+            userDao.setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB);
             sendNotificationToRegisteredUsers();
         } else if((currentDate.getTime() - ((Date)lastUpdateAndTraffic[0]).getTime()) / (MILLIS_IN_HOUR)
                 > HOURS_IN_DAY && (file.length() / (BYTES_IN_MB)) <= Role.getDefaultUserLimit()){
             executeUpdateToCatalog(file);
-            UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
+            userDao.setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB);
             sendNotificationToRegisteredUsers();
         } else if(((int)lastUpdateAndTraffic[1]*BYTES_IN_MB + (int)file.length()) / BYTES_IN_MB <= Role.getDefaultUserLimit()){
             executeUpdateToCatalog(file);
-            UserDaoSingleton.getInstance().setLastUpdateAndTraffic(userId, new Date(),
+            userDao.setLastUpdateAndTraffic(userId, new Date(),
                     (int)file.length() / BYTES_IN_MB + (int)lastUpdateAndTraffic[1]);
             sendNotificationToRegisteredUsers();
         } else {
@@ -329,7 +356,7 @@ public class MainController {
      * @param category - name of category with files
      */
     private void refreshTableContentFromLocalCatalog(String category){
-        List<Reference> references = ResourceCatalog.getInstance().getCategory(category);
+        List<Reference> references = catalog.getCategory(category);
         TreeItem rootItem = treeTableView.getRoot();
         rootItem.getChildren().clear();
         Reference rootReference = (Reference)rootItem.getValue();
