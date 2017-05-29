@@ -1,29 +1,31 @@
 package com.gv.cataloguer.authenthication.validation;
 
-import com.gv.cataloguer.authenthication.dao.UserDaoJDBC;
 import com.gv.cataloguer.models.User;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class UserValidatorTest {
 
-    UserValidator userValidator = new UserValidator(new UserDaoJDBC());
+    private ApplicationContext context;
+
+    private UserValidator validator;
+
+    private final static String VALIDATOR_BEAN = "userValidator";
+
+    @Before
+    public void initialize(){
+        context = new ClassPathXmlApplicationContext("IoC/authenthication-context.xml");
+        validator = (UserValidator) context.getBean(VALIDATOR_BEAN);
+    }
 
     @Test
-    public void checkLogin() throws Exception {
-        String login = "gleb.streltsov@gmail.com";
-        String password = "44447777";
-        User user = userValidator.checkLogin(login, password);
-        Assert.assertNotNull(user);
-        Assert.assertEquals(1, user.getUserId());
-
-        login = "test";
-        password = "test";
-        user = userValidator.checkLogin(login, password);
-        Assert.assertNull(user);
-        login = null;
-        password = null;
-        user = userValidator.checkLogin(login, password);
+    public void checkNonExistLogin() throws Exception {
+        String login = "test@gmail.com";
+        String password = "1234";
+        User user = validator.checkLogin(login, password);
         Assert.assertNull(user);
     }
 
