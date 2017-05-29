@@ -12,3 +12,8 @@ If you just a guest you could suggest resources througth the email message, whic
 - storing data in remote database
 - auxiliary concurrency to improve perfomance
 - using logger for quick bug fix
+
+# Launching app
+after compiling target classes using maven open folder "target" in console and input:
+
+"java -jar cataloguer-1.0.1-jar-with-dependencies.jar"
