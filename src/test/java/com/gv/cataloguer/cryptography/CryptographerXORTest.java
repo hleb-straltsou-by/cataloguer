@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CryptographerXORTest {
+
     @Test
     public void encryptAndDecrypt() throws Exception {
         String originStr = "44447777";
